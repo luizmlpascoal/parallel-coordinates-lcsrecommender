@@ -15,7 +15,7 @@ function updateOptions() {
 
     var m = document.getElementById("mod");
     var mod = m.options[m.selectedIndex].text;
-    g_mod = (mod == 'Split X Temp' ? 'splitXTemp' : 'common');
+    g_mod = (mod == 'Split X Temp' ? 'splitXTemp-' : mod == 'Common' ? "" : "Accum-");
     console.log(mod)
 
     var t = document.getElementById("metric");
@@ -28,7 +28,7 @@ function updateOptions() {
 
     var domain = 'https://raw.githubusercontent.com/luizmlpascoal/doc-csv-files/master/'
 
-    var urlDB = domain + 'files/' + db + '/' + db + '-n-' + n + '-' + (mod == 'Split X Temp' ? 'splitXTemp-' : '') + metric.toLowerCase() + '.csv';
+    var urlDB = domain + 'files/' + db + '/' + db + '-n-' + n + '-' + g_mod + metric.toLowerCase() + '.csv';
 
     console.log(urlDB)
 
