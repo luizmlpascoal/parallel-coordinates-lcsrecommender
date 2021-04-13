@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!--bootstrap-->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <!--main-->
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <!--google fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Courgette">
+    <!-- font awesome-->
+    <!-- for local copies of font awesome, ensure webfont folder is also in local root directory-->
+    <link rel="stylesheet" href="./css/all.min.css">
+
+    <!-- <link rel="stylesheet" href="./css/parasol.css"> -->
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/ParasolJS/parasol-es/demo/parasol.css">
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/ParasolJS/parasol-es/dist/parasol.standalone.js"></script> -->
+
+    <!--jQuery-->
+    <script src="./js/jquery-3.4.1.min.js"></script>
+    <!--bootstrap-->
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/script.js"></script>
+    <script src="./js/parasol.standalone.js"></script>
+    <!-- <script src="./js/d3.v5.min.js"></script> -->
+
+    <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+
+    <!-- <script src="./lib/d3.v5.min.js"></script> -->
+    <!-- <script src="./lib/d3-dsv.min.js"></script>
+    <script src="./lib/parcoords.standalone.js"></script>
+    <!-- <script src="./lib/d3.svg.multibrush.js"></script> -->
+    <!-- <script src="./lib/underscore.js"></script>
+    <script src="./lib/divgrid.js"></script>
+    <script src="./lib/ml.min.js"></script> -->
+    <!--<script src="./lib/FileSaver.js"></script> -->
+
+    <!-- SlickGrid
+    <link rel="stylesheet" href="./lib/slickgrid/slick.grid.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="./lib/slickgrid/jquery-ui-1.8.16.custom.css" type="text/css" />
+    <link rel="stylesheet" href="./lib/slickgrid/plugins/slick.columnpicker.css" type="text/css" />
+
+    <script src="./lib/slickgrid/jquery-1.7.min.js"></script>
+    <script src="./lib/slickgrid/jquery.event.drag-2.0.min.js"></script>
+    <script src="./lib/slickgrid/slick.core.js"></script>
+    <script src="./lib/slickgrid/slick.grid.js"></script>
+    <script src="./lib/slickgrid/slick.dataview.js"></script>
+    <script src="./lib/slickgrid/slick.formatters.js"></script>
+    <script src="./lib/slickgrid/slick.editors.js"></script>
+
+    <script src="./lib/slickgrid/plugins/slick.checkboxselectcolumn.js"></script>
+    <script src="./lib/slickgrid/plugins/slick.autotooltips.js"></script>
+    <script src="./lib/slickgrid/plugins/slick.cellrangedecorator.js"></script>
+    <script src="./lib/slickgrid/plugins/slick.cellrangeselector.js"></script>
+    <script src="./lib/slickgrid/plugins/slick.cellcopymanager.js"></script>
+    <script src="./lib/slickgrid/plugins/slick.cellselectionmodel.js"></script>
+    <script src="./lib/slickgrid/plugins/slick.rowselectionmodel.js"></script>
+    <script src="./lib/slickgrid/plugins/slick.columnpicker.js"></script> -->
+</head>
+
+<body>
+    <h1> Results </h1>
+    <div style="width: 100%; overflow: hidden;">
+
+
+        <h2> Options to Select </h2>
+        <div style="width:200px;">
+            <h3>Dataset:</h3>
+            <select id="dataset">
+                <option value="0" selected="selected">CiaoDVD</option>
+                <option value="1">Delicious</option>
+                <option value="2">GoodReads</option>
+                <option value="3">Personality</option>
+                <option value="4">SequenceFull</option>
+            </select>
+            <h3>Metric:</h3>
+            <select id="metric">
+                <option value="0" selected="selected">Recall</option>
+                <option value="1">Precision</option>
+                <option value="1">LCS</option>
+                <option value="1">MAP</option>
+                <option value="1">NDCG</option>
+            </select>
+            <h3>Types:</h3>
+            <select id="mod" style="margin-bottom: 20px;">
+                <option value="0" selected="selected">Common</option>
+                <option value="1">Split X Temp</option>
+            </select>
+
+            <button onClick="reload()" id="update_chart">Display Selected Options on Chart</button>
+        </div>
+
+        <div>
+
+            <i>Data to export:</i> <br>
+            <!-- <form onSubmit="export_selected_data(); return false;"> -->
+            <input type="radio" name="export_selection" value="brushed" checked> Brushed <br>
+            <input type="radio" name="export_selection" value="marked"> Marked <br>
+            <input type="radio" name="export_selection" value="all"> All <br>
+            <button id="export_button">Export data </button>
+            <button id="reset_brushes">Reset Brushes</button>
+            <!-- <button id='export_selected'>Export</button> -->
+            <!-- </form> -->
+        </div>
+
+        <div style="margin-right: 250px; margin-top: 15px;">
+            Curve smoothness: <br> <input type="range" min="0" max="25" value="0" id="smoothness">
+            <br> Bundling strength for clusters: <br> <input type="range" min="0" max="100" value="0" id="bundling">
+        </div>
+
+    </div>
+
+
+    <div id="p0" class="parcoords" style="height:550px; width:1500px;"></div>
+    <br>
+    <h3>Show How Many Rows?</h3>
+    <input name="searchTxt" type="number" maxlength="512" id="searchTxt" class="searchField" />
+    <button id="grid_update">Display</button>
+    <div id="grid" style="width:100%;height:500px;font-size:large" class="slickgrid-container"></div>
+
+    </div>
+
+
+</body>
+
+</html>
